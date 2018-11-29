@@ -101,6 +101,7 @@ def number_map_sorted_list(friendmap):
 #r = number_map_sorted_list(q)
 #print(r)
     
+
 def recommend_by_number_of_common_friends(graph,user):
     friendmap = number_of_common_friends_map(graph,user)
     friend_recommend = number_map_sorted_list(friendmap)
@@ -115,7 +116,9 @@ def draw_facebook_graph(graph):
     nx.draw(graph)
     plt.savefig("fb.pdf")
     plt.show()
-    
+
+
+
 s = recommend_by_number_of_common_friends(p_graph,'A')
 print(s)
 t = recommend_by_number_of_common_friends(p_graph,'D')
@@ -123,9 +126,38 @@ print(t)
 u = recommend_by_number_of_common_friends(p_graph,'F')
 print(u)
 
-file_path = "provide_facebook_data_path_here"
+def influence_map(graph,user):
+    result=0
+    friends_influence = dict()
+    friendmap = number_of_common_friends_map(graph, user)
+    for k in friendmap.keys():
+        x= common_friends(graph,k,user)
+        
+        for cf in x:
+            no_of_friends=len(friends(graph,cf))
+            result = result + (float(1)/no_of_friends)
+            
+        friends_influence[k] = result
+        result = 0
+    return friends_influence
+
+def recommend_by_influence(graph, user):
+    friendmap = influence_map(graph, user)
+    return number_map_sorted_list(friendmap)
+
+s = recommend_by_influence(p_graph,'A')
+print(s)
+
+
+file_path = "facebook_combined.txt"
 fb_graph = create_facebook_graph(file_path)
 
 #this method call wil take long time to execute.
-draw_facebook_graph(fb_graph)
+#draw_facebook_graph(fb_graph)
+
+
+
+
+
+
 
