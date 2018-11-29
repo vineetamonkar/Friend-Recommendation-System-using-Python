@@ -101,15 +101,31 @@ def number_map_sorted_list(friendmap):
 #r = number_map_sorted_list(q)
 #print(r)
     
-
 def recommend_by_number_of_common_friends(graph,user):
     friendmap = number_of_common_friends_map(graph,user)
     friend_recommend = number_map_sorted_list(friendmap)
     return friend_recommend
 
+def create_facebook_graph(file_path):
+    fb_graph = nx.read_edgelist(file_path, create_using = nx.Graph(), nodetype = int)
+    print (nx.info(fb_graph))
+    return fb_graph;
+    
+def draw_facebook_graph(graph):
+    nx.draw(graph)
+    plt.savefig("fb.pdf")
+    plt.show()
+    
 s = recommend_by_number_of_common_friends(p_graph,'A')
 print(s)
 t = recommend_by_number_of_common_friends(p_graph,'D')
 print(t)
 u = recommend_by_number_of_common_friends(p_graph,'F')
 print(u)
+
+file_path = "provide_facebook_data_path_here"
+fb_graph = create_facebook_graph(file_path)
+
+#this method call wil take long time to execute.
+draw_facebook_graph(fb_graph)
+
